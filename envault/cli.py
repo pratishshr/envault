@@ -9,6 +9,7 @@ from envault import shell
 
 
 def get_secrets(server, secret, token):
+    """ Fetch secrets from Vault Server """
     token = token or os.environ.get("VAULT_TOKEN")
     server = server or os.environ.get("VAULT_SERVER")
     secret = secret or os.environ.get("VAULT_SECRETS_PATH")
