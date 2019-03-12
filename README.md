@@ -36,6 +36,7 @@ $ envault run 'yarn build' -server=https://vault.test-server.com
 ### Environment Variables
 
 Additionally you can also keep the following environment variables instead of passing it from the CLI.
+
 |Variable|CLI Option|Description|
 |--------|-----------|----------|
 |VAULT_TOKEN| -token | Vault token |
