@@ -4,32 +4,32 @@
 
 Envault is a simple CLI tool to run a process with secrets from HashiCorp Vault.
 
-## Usage
+## Installation
 
-**envault** requires `Python 3` and `pip` installed.
-
-### Install envault
+`envault` requires `Python 3` and `pip` installed.
 
 ```sh
 $ pip install envault
 ```
 
+## Usage
+
 ### List secrets from a secret engine
 
-\*\* Note that KV version 2 follows the secrets path as: `${SECRET_ENGINE}/data/${SECRETS_PATH}`
+> Note that `KV version 2` follows the secrets path as: `${SECRET_ENGINE}/data/${SECRETS_PATH}`
 
 ```
-$ envault list -server=https://vault.test-server.com
--secret=kv/data/api
--token=<VAULT_TOKEN>
+$ envault list -server=https://vault.test-server.com \
+               -secret=kv/data/api \
+               -token=<VAULT_TOKEN>
 ```
 
 ### Run a process with injected environment variables from vault
 
 ```
-$ envault run 'node index.js' -server=https://vault.test-server.com
--secret=kv/data/api
--token=<VAULT_TOKEN>
+$ envault run 'node index.js' -server=https://vault.test-server.com \
+                              -secret=kv/data/api \
+                              -token=<VAULT_TOKEN>
 ```
 
 ### Environment Variables
