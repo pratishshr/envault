@@ -1,7 +1,29 @@
+#!/usr/bin/env python3
+
+import os
+
 import click
 
 from envault import vault
 from envault import shell
+
+
+def get_secrets(server, secret, token):
+    token = token or os.environ.get("VAULT_TOKEN")
+    server = server or os.environ.get("VAULT_SERVER")
+    secret = secret or os.environ.get("VAULT_SECRETS_PATH")
+
+    if not server:
+        raise SystemExit(
+            "Error: Vault Server URI is not present. Add '-server' flag or VAULT_SERVER variable in your environment"
+        )
+
+    if not token:
+        raise SystemExit(
+            "Error: Vault Token is not present. Add '-token' flag or VAULT_TOKEN variable in your environment"
+        )
+
+    return vault.get_secrets(server, secret, token)
 
 
 @click.group()
@@ -15,7 +37,7 @@ def cli():
 @click.option("-token", help="Vault token")
 def list(server, secret, token):
     """ List secrets from a given path """
-    secrets = vault.get_secrets(server, secret, token)
+    secrets = get_secrets(server, secret, token)
 
     for key, value in secrets.items():
         click.echo("{}={}".format(key, value))
@@ -28,7 +50,7 @@ def list(server, secret, token):
 @click.argument("command")
 def run(server, secret, token, command):
     """ Run a command with the injected env variables """
-    secrets = vault.get_secrets(server, secret, token)
+    secrets = get_secrets(server, secret, token)
     shell.run_with_env(command, secrets)
 
 

@@ -1,5 +1,3 @@
-#!/usr/bin/env python3
-
 import click
 import requests
 from requests.exceptions import HTTPError
@@ -10,7 +8,13 @@ def get_secrets(server_uri, secrets_path, token):
     BASE_URI = "{}/v1/".format(server_uri)
 
     headers = {"X-Vault-Token": token}
-    request = requests.get(BASE_URI + secrets_path, headers=headers)
-    data = request.json()
+    response = requests.get(BASE_URI + secrets_path, headers=headers)
 
-    return data["data"]["data"]
+    try:
+        response.raise_for_status()
+        data = response.json()
+
+        return data.get("data", {}).get("data")
+    except HTTPError as e:
+        raise SystemExit("Error: " + str(e))
+
