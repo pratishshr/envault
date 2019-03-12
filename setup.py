@@ -1,8 +1,10 @@
 from setuptools import setup, find_packages
 
+import envault
+
 setup(
     name="envault",
-    version=0.2.0,
+    version=envault.__version__,
     author='Pratish Shrestha',
     author_email='pratishshr@gmail.com',
     packages=find_packages(),
