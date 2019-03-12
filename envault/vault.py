@@ -5,9 +5,9 @@ import requests
 from requests.exceptions import HTTPError
 
 
-def get_secrets(secrets_path, token):
+def get_secrets(server_uri, secrets_path, token):
     """ Fetch secrets from vault server """
-    BASE_URI = "https://vault.lftechnology.com/v1/"
+    BASE_URI = "{}/v1/".format(server_uri)
 
     headers = {"X-Vault-Token": token}
     request = requests.get(BASE_URI + secrets_path, headers=headers)
