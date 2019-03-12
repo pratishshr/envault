@@ -16,8 +16,7 @@ $ pip install envault
 
 ### List secrets from a secret engine
 
-\*\* Note that KV version 2 follows the secrets path as below:  
-`${SECRET_ENGINE}/data/${SECRETS_PATH}`
+\*\* Note that KV version 2 follows the secrets path as: `${SECRET_ENGINE}/data/${SECRETS_PATH}`
 
 ```
 $ envault list -server=https://vault.test-server.com
