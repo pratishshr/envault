@@ -2,7 +2,7 @@
 
 [WORK IN PROGRESS]
 
-Envault is a simple CLI tool to run processes with secrets from HashiCorp Vault. It uses API calls to fetch data from vault.
+Envault is a simple CLI tool to run processes with secrets from HashiCorp Vault.
 
 ## Usage
 
