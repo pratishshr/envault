@@ -2,7 +2,7 @@
 
 [![PyPI](https://img.shields.io/pypi/v/envault.svg?style=for-the-badge)](https://pypi.org/project/envault/) [![PyPI - Downloads](https://img.shields.io/pypi/dd/envault.svg?style=for-the-badge)](https://pypi.org/project/envault/)
 
-Envault is a simple CLI tool to run processes with secrets from HashiCorp Vault.
+Envault is a simple CLI tool to run a process with secrets from HashiCorp Vault.
 
 ## Usage
 
@@ -27,7 +27,7 @@ $ envault list -server=https://vault.test-server.com
 ### Run a process with injected environment variables from vault
 
 ```
-$ envault run 'yarn build' -server=https://vault.test-server.com
+$ envault run 'node index.js' -server=https://vault.test-server.com
 -secret=kv/data/api
 -token=<VAULT_TOKEN>
 ```
