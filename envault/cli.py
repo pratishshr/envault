@@ -9,7 +9,7 @@ from envault import shell
 
 
 def get_secrets(server, secret, token):
-    """ Fetch secrets from Vault Server """
+    """ Renew token and fetch secrets from Vault Server """
     token = token or os.environ.get("VAULT_TOKEN")
     server = server or os.environ.get("VAULT_SERVER")
     secret = secret or os.environ.get("VAULT_SECRETS_PATH")
@@ -23,6 +23,8 @@ def get_secrets(server, secret, token):
         raise SystemExit(
             "Error: Vault Token is not present. Add '-token' flag or VAULT_TOKEN variable in your environment"
         )
+
+    vault.renew_token(server, token)
 
     return vault.get_secrets(server, secret, token)
 
