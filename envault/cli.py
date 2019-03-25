@@ -4,8 +4,7 @@ import os
 
 import click
 
-from envault import vault
-from envault import shell
+from envault import vault, shell, __version__
 
 
 def get_secrets(server, secret, token):
@@ -30,6 +29,7 @@ def get_secrets(server, secret, token):
 
 
 @click.group()
+@click.version_option(message=__version__)
 def cli():
     pass
 
