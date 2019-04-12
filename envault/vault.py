@@ -33,16 +33,17 @@ def get_secrets(server_uri, secrets_path, token):
     except HTTPError as e:
         raise SystemExit("Error: " + str(e))
 
-def get_profile_configs(profile = 'default'):
+
+def get_profile_configs(profile="default"):
     """ Extract vault configurations from yml file """
 
-    if os.path.exists('envault.yml'):
-        yaml_file = open('envault.yml', 'r')
+    if os.path.exists("envault.yml"):
+        yaml_file = open("envault.yml", "r")
     else:
-        click.echo('envault.yml file not found')
+        click.echo("envault.yml file not found")
     config = safe_load(yaml_file)
     click.echo(config)
     if profile in config:
         return config.get(profile)
     else:
-        click.echo('No such profile found')
+        click.echo("No such profile found")
