@@ -1,8 +1,6 @@
 import os
 
-from envault.utils import yaml_file
-
-from yaml import safe_load
+from envault.utils import yaml
 
 import click
 
@@ -16,8 +14,8 @@ def create_config_file(vault_server, vault_token, vault_secret_path, name):
     }
     config_file = {"profiles": [new_profile]}
 
-    if os.path.exists(yaml_file.get_yml_file()):
-        existing_yml_data = yaml_file.load_data_from_yml()
+    if os.path.exists(yaml.get_yml_file()):
+        existing_yml_data = yaml.load_data_from_yml()
 
         if existing_yml_data is not None and "profiles" in existing_yml_data:
             existing_profiles = existing_yml_data.get("profiles")
@@ -44,8 +42,8 @@ def create_config_file(vault_server, vault_token, vault_secret_path, name):
 def get_profile_configs(name="default"):
     """ Extract vault configurations from yml file """
 
-    if os.path.exists(yaml_file.get_yml_file()):
-        existing_yml_data = yaml_file.load_data_from_yml()
+    if os.path.exists(yaml.get_yml_file()):
+        existing_yml_data = yaml.load_data_from_yml()
 
         if existing_yml_data is not None and "profiles" in existing_yml_data:
             existing_profiles = existing_yml_data.get("profiles")

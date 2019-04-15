@@ -7,9 +7,7 @@ import click
 
 from envault import vault, shell, __version__
 
-from envault.utils import config, yaml_file
-
-from yaml import safe_load, dump
+from envault.utils import config, yaml
 
 from pathlib import Path
 
@@ -82,7 +80,7 @@ def init():
         vault_server, vault_token, vault_secret_path, profile_name
     )
 
-    yaml_file.dump_data_to_yml(config_file)
+    yaml.dump_data_to_yml(config_file)
 
 
 @cli.command("list")
