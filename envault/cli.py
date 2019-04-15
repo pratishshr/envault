@@ -4,16 +4,35 @@ import os
 
 import click
 
+
 from envault import vault, shell, __version__
+
+from envault.utils import config, yaml_file
 
 from yaml import safe_load, dump
 
+from pathlib import Path
 
-def get_secrets(server, secret, token):
+
+def get_secrets(server, secret, token, profile):
     """ Renew token and fetch secrets from Vault Server """
-    token = token or os.environ.get("VAULT_TOKEN")
-    server = server or os.environ.get("VAULT_SERVER")
-    secret = secret or os.environ.get("VAULT_SECRETS_PATH")
+    profile_configs = {
+        "vault_token": None,
+        "vault_server": None,
+        "vault_secret_path": None,
+    }
+    if profile:
+        profile_configs = config.get_profile_configs(profile)
+
+    token = token or profile_configs.get("vault_token") or os.environ.get("VAULT_TOKEN")
+    server = (
+        server or profile_configs.get("vault_server") or os.environ.get("VAULT_SERVER")
+    )
+    secret = (
+        secret
+        or profile_configs.get("vault_secret_path")
+        or os.environ.get("VAULT_SECRETS_PATH")
+    )
 
     if not server:
         raise SystemExit(
@@ -37,55 +56,43 @@ def cli():
 
 
 @cli.command("init")
-@click.option("-profile", help="profile for the config")
-def init(profile):
-    if profile is None:
-        profile = "default"
+def init():
     """ Initialize envault config with vault server, token and secrets path """
-    click.echo("Enter the server, token and path to vault secrets")
+    click.echo("Enter the profile name, server, token and path to vault secrets")
+    profile_name = click.prompt("Profile Name", type=str)
     vault_server = click.prompt("Vault Server", type=str)
     vault_token = click.prompt("Vault Token", type=str)
     vault_secret_path = click.prompt("Path to vault secret", type=str)
 
     click.echo(
-        "server %s token %s path %s" % (vault_server, vault_token, vault_secret_path)
+        """
+        name: {name}
+        vault_server: {server}
+        vault_token: {token}
+        vault_secret_path: {secret_path}
+        """.format(
+            name=profile_name,
+            server=vault_server,
+            token=vault_token,
+            secret_path=vault_secret_path,
+        )
     )
 
-    new_profile = {
-        profile: {
-            "vault_server": vault_server,
-            "vault_token": vault_token,
-            "vault_secret_path": vault_secret_path,
-        }
-    }
+    config_file = config.create_config_file(
+        vault_server, vault_token, vault_secret_path, profile_name
+    )
 
-    if os.path.exists("envault.yml"):
-        yaml_file = open("envault.yml", "r")
-        all_profile_configs = safe_load(yaml_file)
-        if all_profile_configs is not None and profile in all_profile_configs:
-            yaml_file = open("envault.yml", "w")
-            updated_profile = {**all_profile_configs, **new_profile}
-
-            dump(updated_profile, yaml_file, default_flow_style=False)
-        else:
-            yaml_file = open("envault.yml", "a")
-            dump(new_profile, yaml_file, default_flow_style=False)
-    else:
-        yaml_file = open("envault.yml", "w+")
-        dump(new_profile, yaml_file, default_flow_style=False)
+    yaml_file.dump_data_to_yml(config_file)
 
 
 @cli.command("list")
 @click.option("-server", help="Server URI")
 @click.option("-secret", help="Path to the secrets")
 @click.option("-token", help="Vault token")
-def list(server, secret, token):
+@click.option("-profile", help="Profile name stored in yml file")
+def list(server, secret, token, profile):
     """ List secrets from a given path """
-    config = vault.get_profile_configs()
-    server = config.get("vault_server")
-    secret = config.get("vault_secret_path")
-    token = config.get("vault_token")
-    secrets = get_secrets(server, secret, token)
+    secrets = get_secrets(server, secret, token, profile)
 
     for key, value in secrets.items():
         click.echo("{}={}".format(key, value))
@@ -98,10 +105,6 @@ def list(server, secret, token):
 @click.argument("command")
 def run(server, secret, token, command):
     """ Run a command with the injected env variables """
-    config = vault.get_profile_configs()
-    server = config.get("vault_server")
-    secret = config.get("vault_secret_path")
-    token = config.get("vault_token")
 
     secrets = get_secrets(server, secret, token)
     shell.run_with_env(command, secrets)
