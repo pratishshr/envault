@@ -62,8 +62,15 @@ def init():
     vault_token = click.prompt("Vault Token", type=str)
     vault_secret_path = click.prompt("Path to vault secret", type=str)
 
+    config_file = config.create_config_file(
+        vault_server, vault_token, vault_secret_path, profile_name
+    )
+
+    yaml.dump_data_to_yml(config_file)
+
     click.echo(
         """
+        Following information is saved.
         name: {name}
         vault_server: {server}
         vault_token: {token}
@@ -75,12 +82,6 @@ def init():
             secret_path=vault_secret_path,
         )
     )
-
-    config_file = config.create_config_file(
-        vault_server, vault_token, vault_secret_path, profile_name
-    )
-
-    yaml.dump_data_to_yml(config_file)
 
 
 @cli.command("list")

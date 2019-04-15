@@ -19,20 +19,18 @@ def create_config_file(vault_server, vault_token, vault_secret_path, name):
 
         if existing_yml_data is not None and "profiles" in existing_yml_data:
             existing_profiles = existing_yml_data.get("profiles")
+            update_profile_index = -1
 
             for index, profile in enumerate(existing_profiles):
                 if profile["name"] == name:
-                    existing_profiles[index] = {
-                        "name": name,
-                        "vault_server": vault_server,
-                        "vault_token": vault_token,
-                        "vault_secret_path": vault_secret_path,
-                    }
+                    update_profile_index = index
 
                     break
 
-                else:
-                    existing_profiles.append(new_profile)
+            if update_profile_index != -1:
+                existing_profiles[update_profile_index] = new_profile
+            else:
+                existing_profiles.append(new_profile)
 
             config_file = {"profiles": existing_profiles}
 
