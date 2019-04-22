@@ -1,15 +1,11 @@
 #!/usr/bin/env python3
 
 import os
-
 import click
 
-
-from envault import vault, shell, __version__
-
-from envault.utils import config, yaml
-
 from pathlib import Path
+from envault.utils import config, yaml
+from envault import vault, shell, __version__
 
 
 def get_secrets(server, secret, token, profile):

@@ -1,11 +1,11 @@
 import os
+import click
 
 from envault.utils import yaml
 
-import click
-
 
 def create_config_file(vault_server, vault_token, vault_secret_path, name):
+    """Create a new config file based on existing file and provided profile"""
     new_profile = {
         "name": name,
         "vault_server": vault_server,
@@ -14,48 +14,64 @@ def create_config_file(vault_server, vault_token, vault_secret_path, name):
     }
     config_file = {"profiles": [new_profile]}
 
-    if os.path.exists(yaml.get_yml_file()):
-        existing_yml_data = yaml.load_data_from_yml()
+    if not yaml.check_yml_file_exists():
+        return config_file
 
-        if existing_yml_data is not None and "profiles" in existing_yml_data:
-            existing_profiles = existing_yml_data.get("profiles")
-            update_profile_index = -1
+    existing_yml_file = yaml.load_data_from_yml()
+    profile_index = get_profile_index_and_values(existing_yml_file, name)["index"]
+    existing_profiles = existing_yml_file.get("profiles")
 
-            for index, profile in enumerate(existing_profiles):
-                if profile["name"] == name:
-                    update_profile_index = index
+    if profile_index != -1:
+        existing_profiles[profile_index] = new_profile
+    else:
+        existing_profiles.append(new_profile)
 
-                    break
-
-            if update_profile_index != -1:
-                existing_profiles[update_profile_index] = new_profile
-            else:
-                existing_profiles.append(new_profile)
-
-            config_file = {"profiles": existing_profiles}
+    config_file = {"profiles": existing_profiles}
 
     return config_file
 
 
 def get_profile_configs(name="default"):
     """ Extract vault configurations from yml file """
+    if not yaml.check_yml_file_exists():
+        raise SystemExit("envault.yml file not found")
 
-    if os.path.exists(yaml.get_yml_file()):
-        existing_yml_data = yaml.load_data_from_yml()
+    existing_yml_file = yaml.load_data_from_yml()
 
-        if existing_yml_data is not None and "profiles" in existing_yml_data:
-            existing_profiles = existing_yml_data.get("profiles")
+    if not is_config_file_valid(existing_yml_file):
+        raise SystemExit("Invalid envault.yml file")
 
-            for profile in existing_profiles:
-                if profile["name"] == name:
-                    return profile
+    found_index_and_profile = get_profile_index_and_values(existing_yml_file, name)
 
-            raise SystemExit(
-                "Profile of name:{name} not present in yml file.".format(name=name)
-            )
+    if found_index_and_profile["index"] == -1:
+        raise SystemExit(
+            "Profile of name:{name} not present in yml file.".format(name=name)
+        )
 
-        else:
-            raise SystemExit("Something is wrong in envault.yml file.")
+    return found_index_and_profile["profile"]
 
-    else:
-        raise SystemExit("envault.yml file not found.")
+
+def get_profile_index_and_values(config_file, profile_name):
+    """Extract profile and its index from config file"""
+
+    initial_profile = {"index": -1, "profile": None}
+
+    if is_config_file_valid(config_file):
+        profiles = config_file.get("profiles")
+
+        for index, profile in enumerate(profiles):
+            if profile["name"] == profile_name:
+                initial_profile["index"] = index
+                initial_profile["profile"] = profile
+
+                return initial_profile
+
+    return initial_profile
+
+
+def is_config_file_valid(config_file):
+    """Function to check if config file is valid. Valid if file is not empty and has key 'profiles'"""
+    if config_file is not None and "profiles" in config_file:
+        return True
+
+    return False
