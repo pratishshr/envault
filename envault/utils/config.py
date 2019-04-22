@@ -18,6 +18,10 @@ def create_config_file(vault_server, vault_token, vault_secret_path, name):
         return config_file
 
     existing_yml_file = yaml.load_data_from_yml()
+
+    if not is_config_file_valid(existing_yml_file):
+        raise SystemExit("Invalid envault.yml file")
+
     profile_index = get_profile_index_and_values(existing_yml_file, name)["index"]
     existing_profiles = existing_yml_file.get("profiles")
 
@@ -38,7 +42,7 @@ def get_profile_configs(name="default"):
 
     existing_yml_file = yaml.load_data_from_yml()
 
-    if not is_config_file_valid(existing_yml_file):
+    if not is_config_file_valid(existing_yml_file) or existing_yml_file is None:
         raise SystemExit("Invalid envault.yml file")
 
     found_index_and_profile = get_profile_index_and_values(existing_yml_file, name)
@@ -55,22 +59,19 @@ def get_profile_index_and_values(config_file, profile_name):
     """Extract profile and its index from config file"""
     initial_profile = {"index": -1, "profile": None}
 
-    if is_config_file_valid(config_file):
-        profiles = config_file.get("profiles")
+    profiles = config_file.get("profiles")
 
-        for index, profile in enumerate(profiles):
-            if profile["name"] == profile_name:
-                initial_profile["index"] = index
-                initial_profile["profile"] = profile
-
-                return initial_profile
+    for index, profile in enumerate(profiles):
+        if profile["name"] == profile_name:
+            initial_profile["index"] = index
+            initial_profile["profile"] = profile
 
     return initial_profile
 
 
 def is_config_file_valid(config_file):
-    """Function to check if config file is valid. Valid if file is not empty and has key 'profiles'"""
-    if config_file is not None and "profiles" in config_file:
+    """Function to check if config file is valid. Valid if file has key 'profiles'"""
+    if type(config_file) is dict and "profiles" in config_file.keys():
         return True
 
     return False
