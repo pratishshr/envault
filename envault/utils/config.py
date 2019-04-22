@@ -53,7 +53,6 @@ def get_profile_configs(name="default"):
 
 def get_profile_index_and_values(config_file, profile_name):
     """Extract profile and its index from config file"""
-
     initial_profile = {"index": -1, "profile": None}
 
     if is_config_file_valid(config_file):
