@@ -1,5 +1,7 @@
+import os
 import click
 import requests
+
 from requests.exceptions import HTTPError
 
 
@@ -29,4 +31,3 @@ def get_secrets(server_uri, secrets_path, token):
         return data.get("data", {}).get("data")
     except HTTPError as e:
         raise SystemExit("Error: " + str(e))
-
