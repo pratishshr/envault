@@ -4,7 +4,7 @@ import os
 
 import click
 
-from envault import vault, shell, __version__
+from envault import vault, shell, aws, __version__
 
 
 def get_secrets(server, secret, token):
@@ -56,6 +56,11 @@ def run(server, secret, token, command):
     secrets = get_secrets(server, secret, token)
     shell.run_with_env(command, secrets)
 
+
+@cli.command("awssec")
+def awssec():
+    secret = aws.get_aws_secret()
+    click.echo(secret)
 
 if __name__ == "__main__":
     cli()
