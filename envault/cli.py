@@ -127,7 +127,6 @@ def list(server, secret, token, profile):
 @click.argument("command")
 def run(server, secret, token, engine, command):
     """ Run a command with the injected env variables """
-
     if engine == "asm":
         secrets = get_aws_secrets()
     if engine == "vault":
