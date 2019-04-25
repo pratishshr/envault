@@ -7,7 +7,8 @@ from pathlib import Path
 from envault.utils import config, yaml
 from envault import vault, shell, aws, __version__
 
-def get_vault_secrets(server, secret, token, profile = None):
+
+def get_vault_secrets(server, secret, token, profile=None):
     """ Renew token and fetch secrets from Vault Server """
     profile_configs = {
         "vault_token": None,
@@ -41,6 +42,7 @@ def get_vault_secrets(server, secret, token, profile = None):
 
     return vault.get_secrets(server, secret, token)
 
+
 def get_aws_secrets():
     """ Get Aws secrets using environment variables """
     secret_name = os.environ.get("SECRET_NAME")
@@ -50,7 +52,7 @@ def get_aws_secrets():
 
     if not secret_name:
         raise SystemExit("Error: Secret Name is not present")
-    
+
     if not region_name:
         raise SystemExit("Error: Region Name is not present")
 
@@ -59,15 +61,12 @@ def get_aws_secrets():
 
     if not aws_secret_access_key:
         raise SystemExit("Error: AWS Secret Access Key is not present")
-    
+
     return aws.get_aws_secret(
-        aws_client_id,
-        aws_secret_access_key,
-        secret_name,
-        region_name
+        aws_client_id, aws_secret_access_key, secret_name, region_name
     )
-        
-        
+
+
 @click.group()
 @click.version_option(message=__version__)
 def cli():
@@ -78,7 +77,7 @@ def cli():
 @click.option("-secretmanager", help="Secret Manager to use", default="aws")
 def init(secretmanager):
     """ Initialize envault config for aws or vault secret manager"""
-    if (secretmanager == "vault"):
+    if secretmanager == "vault":
         click.echo("Enter the profile name, server, token and path to vault secrets")
         profile_name = click.prompt("Profile Name", type=str)
         vault_server = click.prompt("Vault Server", type=str)
@@ -105,16 +104,6 @@ def init(secretmanager):
                 secret_path=vault_secret_path,
             )
         )
-    
-    if (secretmanager == "aws"):
-        click.echo("Enter the secret name and region name for aws secret manager")
-        secret_name = click.prompt("Secret Name", type=str)
-        region_name = click.prompt("Region Name", type=str)
-
-        aws_config_file = config.create_aws_config_file(secret_name, region_name)
-
-        yaml.dump_data_to_yml(aws_config_file, "a+")
-
 
 
 @cli.command("list")
@@ -139,12 +128,13 @@ def list(server, secret, token, profile):
 def run(server, secret, token, engine, command):
     """ Run a command with the injected env variables """
 
-    if (engine == "asm"):
+    if engine == "asm":
         secrets = get_aws_secrets()
-    if (engine == "vault"):
+    if engine == "vault":
         secrets = get_vault_secrets(server, secret, token)
 
     shell.run_with_env(command, secrets)
+
 
 if __name__ == "__main__":
     cli()
