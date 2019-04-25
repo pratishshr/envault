@@ -75,10 +75,3 @@ def is_config_file_valid(config_file):
         return True
 
     return False
-
-
-def create_aws_config_file(secret_name, region_name):
-    """Create a config file for aws secret manager"""
-    config_file = {"aws": {"secret_name": secret_name, "region_name": region_name}}
-
-    return config_file
