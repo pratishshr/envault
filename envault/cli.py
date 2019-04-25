@@ -44,7 +44,7 @@ def get_vault_secrets(server, secret, token, profile=None):
 
 
 def get_aws_secrets():
-    """ Get Aws secrets using environment variables """
+    """ Get AWS secrets using environment variables """
     secret_name = os.environ.get("SECRET_NAME")
     region_name = os.environ.get("REGION_NAME")
     aws_client_id = os.environ.get("AWS_CLIENT_ID")
@@ -74,36 +74,34 @@ def cli():
 
 
 @cli.command("init")
-@click.option("-secretmanager", help="Secret Manager to use", default="aws")
-def init(secretmanager):
-    """ Initialize envault config for aws or vault secret manager"""
-    if secretmanager == "vault":
-        click.echo("Enter the profile name, server, token and path to vault secrets")
-        profile_name = click.prompt("Profile Name", type=str)
-        vault_server = click.prompt("Vault Server", type=str)
-        vault_token = click.prompt("Vault Token", type=str)
-        vault_secret_path = click.prompt("Path to vault secret", type=str)
+def init():
+    """ Initialize envault config for AWS or vault secret manager"""
+    click.echo("Enter the profile name, server, token and path to vault secrets")
+    profile_name = click.prompt("Profile Name", type=str)
+    vault_server = click.prompt("Vault Server", type=str)
+    vault_token = click.prompt("Vault Token", type=str)
+    vault_secret_path = click.prompt("Path to vault secret", type=str)
 
-        config_file = config.create_config_file(
-            vault_server, vault_token, vault_secret_path, profile_name
+    config_file = config.create_config_file(
+        vault_server, vault_token, vault_secret_path, profile_name
+    )
+
+    yaml.dump_data_to_yml(config_file)
+
+    click.echo(
+        """
+        Following information is saved.
+        name: {name}
+        vault_server: {server}
+        vault_token: {token}
+        vault_secret_path: {secret_path}
+        """.format(
+            name=profile_name,
+            server=vault_server,
+            token=vault_token,
+            secret_path=vault_secret_path,
         )
-
-        yaml.dump_data_to_yml(config_file)
-
-        click.echo(
-            """
-            Following information is saved.
-            name: {name}
-            vault_server: {server}
-            vault_token: {token}
-            vault_secret_path: {secret_path}
-            """.format(
-                name=profile_name,
-                server=vault_server,
-                token=vault_token,
-                secret_path=vault_secret_path,
-            )
-        )
+    )
 
 
 @cli.command("list")

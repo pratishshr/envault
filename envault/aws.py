@@ -27,7 +27,8 @@ def get_secrets(aws_client_id, aws_secret_access_key, secret_name, region_name):
     else:
         if "SecretString" in get_secret_value_response:
             text_secret_data = get_secret_value_response["SecretString"]
-        else:
-            binary_secret_data = get_secret_value_response["SecretBinary"]
 
-    return json.loads(text_secret_data)
+            return json.loads(text_secret_data)
+        else:
+            return binary_secret_data = get_secret_value_response["SecretBinary"]
+            
