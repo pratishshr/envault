@@ -9,4 +9,3 @@ def run_with_env(command, env):
     child.communicate()
 
     return child.returncode
-
