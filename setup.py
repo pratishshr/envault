@@ -22,7 +22,7 @@ setup(
         "Click==7.0",
         "requests==2.21.0",
         "boto3==1.9.135",
-        "PyYAML" == 5.1,
+        "PyYAML==5.1",
     ],
     entry_points="""
         [console_scripts]
