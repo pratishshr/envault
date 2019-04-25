@@ -5,7 +5,7 @@ import click
 from botocore.exceptions import ClientError
 
 
-def get_aws_secret(aws_client_id, aws_secret_access_key, secret_name, region_name):
+def get_secrets(aws_client_id, aws_secret_access_key, secret_name, region_name):
     """ Fetch aws secrets """
     session = boto3.session.Session()
     client = session.client(

@@ -62,7 +62,7 @@ def get_aws_secrets():
     if not aws_secret_access_key:
         raise SystemExit("Error: AWS Secret Access Key is not present")
 
-    return aws.get_aws_secret(
+    return aws.get_secrets(
         aws_client_id, aws_secret_access_key, secret_name, region_name
     )
 
