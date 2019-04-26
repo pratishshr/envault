@@ -75,7 +75,7 @@ def cli():
 
 @cli.command("init")
 def init():
-    """ Initialize envault config for AWS or vault secret manager"""
+    """ Initialize config for vault secret manager"""
     click.echo("Enter the profile name, server, token and path to vault secrets")
     profile_name = click.prompt("Profile Name", type=str)
     vault_server = click.prompt("Vault Server", type=str)
@@ -111,7 +111,7 @@ def init():
 @click.option("-profile", help="Profile name stored in yml file")
 def list(server, secret, token, profile):
     """ List secrets from a given path """
-    secrets = get_secrets(server, secret, token, profile)
+    secrets = get_vault_secrets(server, secret, token, profile)
 
     for key, value in secrets.items():
         click.echo("{}={}".format(key, value))

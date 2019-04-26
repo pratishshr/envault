@@ -30,5 +30,5 @@ def get_secrets(aws_client_id, aws_secret_access_key, secret_name, region_name):
 
             return json.loads(text_secret_data)
         else:
-            return binary_secret_data = get_secret_value_response["SecretBinary"]
+            return get_secret_value_response["SecretBinary"]
             
