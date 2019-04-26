@@ -18,7 +18,12 @@ setup(
     description="A simple CLI tool to run processes with secrets from HashiCorp Vault.",
     long_description=long_description,
     py_modules=["envault"],
-    install_requires=["Click==7.0", "requests==2.21.0"],
+    install_requires=[
+        "Click==7.0",
+        "requests==2.21.0",
+        "boto3==1.9.135",
+        "PyYAML==5.1",
+    ],
     entry_points="""
         [console_scripts]
         envault=envault.cli:cli
