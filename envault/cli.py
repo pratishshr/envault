@@ -47,7 +47,7 @@ def get_aws_secrets():
     """ Get AWS secrets using environment variables """
     secret_name = os.environ.get("SECRET_NAME")
     region_name = os.environ.get("REGION_NAME")
-    aws_client_id = os.environ.get("AWS_CLIENT_ID")
+    aws_access_key_id = os.environ.get("AWS_ACCESS_KEY_ID")
     aws_secret_access_key = os.environ.get("AWS_SECRET_ACCESS_KEY")
 
     if not secret_name:
@@ -56,14 +56,14 @@ def get_aws_secrets():
     if not region_name:
         raise SystemExit("Error: Region Name is not present")
 
-    if not aws_client_id:
-        raise SystemExit("Error: AWS Client ID is not present")
+    if not aws_access_key_id:
+        raise SystemExit("Error: AWS Access Key ID is not present")
 
     if not aws_secret_access_key:
         raise SystemExit("Error: AWS Secret Access Key is not present")
 
     return aws.get_secrets(
-        aws_client_id, aws_secret_access_key, secret_name, region_name
+        aws_access_key_id, aws_secret_access_key, secret_name, region_name
     )
 
 
