@@ -43,12 +43,12 @@ def get_vault_secrets(server, secret, token, profile=None):
     return vault.get_secrets(server, secret, token)
 
 
-def get_aws_secrets():
+def get_aws_secrets(secret, region, accessid, secretkey):
     """ Get AWS secrets using environment variables """
-    secret_name = os.environ.get("SECRET_NAME")
-    region_name = os.environ.get("REGION_NAME")
-    aws_access_key_id = os.environ.get("AWS_ACCESS_KEY_ID")
-    aws_secret_access_key = os.environ.get("AWS_SECRET_ACCESS_KEY")
+    secret_name = secret or os.environ.get("SECRET_NAME")
+    region_name = region or os.environ.get("REGION_NAME")
+    aws_access_key_id = accessid or os.environ.get("AWS_ACCESS_KEY_ID")
+    aws_secret_access_key = secretkey or os.environ.get("AWS_SECRET_ACCESS_KEY")
 
     if not secret_name:
         raise SystemExit("Error: Secret Name is not present")
@@ -119,14 +119,17 @@ def list(server, secret, token, profile):
 
 @cli.command("run")
 @click.option("-server", help="Server URI")
-@click.option("-secret", help="Path to the secrets")
+@click.option("-secret", help="Path to the Vault secrets or AWS Secret Manager secret name")
 @click.option("-token", help="Vault token")
+@click.option("-region", help="AWS Secret manager region name")
+@click.option("-accessid", help="AWS Access Key ID")
+@click.option("-secretkey", help="AWS Secret Access Key")
 @click.option("-engine", help="Secret Manager", default="asm")
 @click.argument("command")
 def run(server, secret, token, engine, command):
     """ Run a command with the injected env variables """
     if engine == "asm":
-        secrets = get_aws_secrets()
+        secrets = get_aws_secrets(secret, region, accessid, secretkey)
     if engine == "vault":
         secrets = get_vault_secrets(server, secret, token)
 
