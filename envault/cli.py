@@ -43,12 +43,12 @@ def get_vault_secrets(server, secret, token, profile=None):
     return vault.get_secrets(server, secret, token)
 
 
-def get_aws_secrets():
+def get_aws_secrets(secret, region, accessid, secretkey):
     """ Get AWS secrets using environment variables """
-    secret_name = os.environ.get("SECRET_NAME")
-    region_name = os.environ.get("REGION_NAME")
-    aws_client_id = os.environ.get("AWS_CLIENT_ID")
-    aws_secret_access_key = os.environ.get("AWS_SECRET_ACCESS_KEY")
+    secret_name = secret or os.environ.get("SECRET_NAME")
+    region_name = region or os.environ.get("REGION_NAME")
+    aws_access_key_id = accessid or os.environ.get("AWS_ACCESS_KEY_ID")
+    aws_secret_access_key = secretkey or os.environ.get("AWS_SECRET_ACCESS_KEY")
 
     if not secret_name:
         raise SystemExit("Error: Secret Name is not present")
@@ -56,14 +56,14 @@ def get_aws_secrets():
     if not region_name:
         raise SystemExit("Error: Region Name is not present")
 
-    if not aws_client_id:
-        raise SystemExit("Error: AWS Client ID is not present")
+    if not aws_access_key_id:
+        raise SystemExit("Error: AWS Access Key ID is not present")
 
     if not aws_secret_access_key:
         raise SystemExit("Error: AWS Secret Access Key is not present")
 
     return aws.get_secrets(
-        aws_client_id, aws_secret_access_key, secret_name, region_name
+        aws_access_key_id, aws_secret_access_key, secret_name, region_name
     )
 
 
@@ -75,7 +75,7 @@ def cli():
 
 @cli.command("init")
 def init():
-    """ Initialize config for vault secret manager"""
+    """ Initialize envault config for vault secret manager"""
     click.echo("Enter the profile name, server, token and path to vault secrets")
     profile_name = click.prompt("Profile Name", type=str)
     vault_server = click.prompt("Vault Server", type=str)
@@ -119,14 +119,17 @@ def list(server, secret, token, profile):
 
 @cli.command("run")
 @click.option("-server", help="Server URI")
-@click.option("-secret", help="Path to the secrets")
+@click.option("-secret", help="Path to the Vault secrets or AWS Secret Manager secret name")
 @click.option("-token", help="Vault token")
+@click.option("-region", help="AWS Secret manager region name")
+@click.option("-accessid", help="AWS Access Key ID")
+@click.option("-secretkey", help="AWS Secret Access Key")
 @click.option("-engine", help="Secret Manager", default="asm")
 @click.argument("command")
 def run(server, secret, token, engine, command):
     """ Run a command with the injected env variables """
     if engine == "asm":
-        secrets = get_aws_secrets()
+        secrets = get_aws_secrets(secret, region, accessid, secretkey)
     if engine == "vault":
         secrets = get_vault_secrets(server, secret, token)
 
