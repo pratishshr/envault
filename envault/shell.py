@@ -7,5 +7,5 @@ def run_with_env(command, env):
     environment_variables = {**os.environ, **env}
     child = subprocess.Popen(command, shell=True, env=environment_variables)
     child.communicate()
-    print(child.returncode)
+
     return child.returncode
