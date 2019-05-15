@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 
 import os
+import sys
 import click
 
 from pathlib import Path
@@ -126,14 +127,14 @@ def list(server, secret, token, profile):
 @click.option("-secretkey", help="AWS Secret Access Key")
 @click.option("-engine", help="Secret Manager", default="asm")
 @click.argument("command")
-def run(server, secret, token, engine, command):
+def run(server, secret, token, region, accessid, secretkey, engine, command):
     """ Run a command with the injected env variables """
     if engine == "asm":
         secrets = get_aws_secrets(secret, region, accessid, secretkey)
     if engine == "vault":
         secrets = get_vault_secrets(server, secret, token)
 
-    shell.run_with_env(command, secrets)
+    sys.exit(shell.run_with_env(command, secrets))
 
 
 if __name__ == "__main__":
