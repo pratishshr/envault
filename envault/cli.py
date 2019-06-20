@@ -117,6 +117,8 @@ def init():
 def list(server, secret, token, profile, region, accessid, secretkey, engine):
     """ List secrets from a given path """
     secrets = {}
+    engine = engine or os.environ.get("ENGINE")
+    
     if engine == "asm":
         secrets = get_aws_secrets(secret, region, accessid, secretkey)
     if engine == "vault":
