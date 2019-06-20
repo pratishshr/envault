@@ -110,9 +110,19 @@ def init():
 @click.option("-secret", help="Path to the secrets")
 @click.option("-token", help="Vault token")
 @click.option("-profile", help="Profile name stored in yml file")
-def list(server, secret, token, profile):
+@click.option("-region", help="AWS Secret manager region name")
+@click.option("-accessid", help="AWS Access Key ID")
+@click.option("-secretkey", help="AWS Secret Access Key")
+@click.option("-engine", help="Secret Manager", default="asm")
+def list(server, secret, token, profile, region, accessid, secretkey, engine):
     """ List secrets from a given path """
-    secrets = get_vault_secrets(server, secret, token, profile)
+    secrets = {}
+    engine = engine or os.environ.get("ENGINE")
+    
+    if engine == "asm":
+        secrets = get_aws_secrets(secret, region, accessid, secretkey)
+    if engine == "vault":
+        secrets = get_vault_secrets(server, secret, token,profile)
 
     for key, value in secrets.items():
         click.echo("{}={}".format(key, value))
