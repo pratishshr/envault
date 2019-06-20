@@ -68,7 +68,7 @@ Additionally you can also keep the following environment variables instead of pa
 |AWS_SECRET_ACCESS_KEY| -secretkey | AWS Secret Access Key |
 
 
-> Vault congiguration
+> Vault configuration
 
 |Variable|CLI Option|Description|
 |--------|-----------|----------|
