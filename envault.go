@@ -1,6 +1,10 @@
 package main
 
-import "github.com/pratishshr/envault/cli"
+import (
+	"fmt"
+
+	"github.com/pratishshr/envault/cli"
+)
 
 func main() {
 	info := &cli.Info{
@@ -14,6 +18,6 @@ func main() {
 	err := cli.Initialize(info)
 
 	if err != nil {
-		panic(err)
+		fmt.Println(err)
 	}
 }
