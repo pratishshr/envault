@@ -1,4 +1,0 @@
-boto3==1.9.135
-Click==7.0
-PyYAML==5.1
-requests==2.21.0
