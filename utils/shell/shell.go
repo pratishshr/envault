@@ -6,7 +6,7 @@ import (
 )
 
 func convertToSlice(secrets map[string]string) []string {
-	secretsSlice := []string{}
+	var secretsSlice []string
 
 	for key, value := range secrets {
 		secretsSlice = append(secretsSlice, key+"="+value)
