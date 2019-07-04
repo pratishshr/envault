@@ -8,13 +8,13 @@ Envault focuses on integrating AWS Secrets Manager in your application with ease
 
 ## Quick Start
 
-Install Envault:
+#### Install Envault:
 
 ```
 $ curl -sf https://raw.githubusercontent.com/pratishshr/envault/master/install.sh | sh
 ```
 
-Setup environment:
+#### Setup environment:
 
 ```
 $ export AWS_REGION={AWS region where you added your secret}
@@ -22,17 +22,15 @@ $ export AWS_ACCESS_KEY_ID=${Your AWS access key}
 $ export AWS_SECRET_ACCESS_KEY=${Your AWS secret key}
 ```
 
-Or: <br>
-
 Envault also supports AWS credentials from `~/.aws` with the `default` profile if you don't set the environment variables. <br>
 
-List secrets:
+#### List secrets:
 
 ```
 $ envault list -secret=${path to your secret}
 ```
 
-Run process with secrets:
+#### Run process with secrets:
 
 ```
 $ envault run 'yarn build' -secret=${path to your secret}
