@@ -40,6 +40,15 @@ func Initialize(info *Info) error {
 
 	app.Commands = []cli.Command{
 		cli.Command{
+			Name:  "init",
+			Usage: "Initial envault configuration",
+			Action: func(ctx *cli.Context) error {
+				Init()
+
+				return nil
+			},
+		},
+		cli.Command{
 			Name:  "list",
 			Usage: "List environment variables stored in Secrets Manager",
 			Flags: flags,

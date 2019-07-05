@@ -11,6 +11,7 @@ import (
 	"github.com/aws/aws-sdk-go/service/secretsmanager"
 )
 
+
 // GetSecrets ...
 func GetSecrets(secretName string) map[string]string {
 	profile := os.Getenv("AWS_PROFILE")
