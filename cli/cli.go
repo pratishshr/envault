@@ -6,7 +6,7 @@ import (
 	"github.com/urfave/cli"
 )
 
-// Info defined the basic information required for the CLI.
+// Info defines the basic information required for the CLI.
 type Info struct {
 	Name        string
 	Version     string
@@ -18,6 +18,7 @@ type Info struct {
 // Initialize and bootstrap the CLI.
 func Initialize(info *Info) error {
 	var secretName string
+	var env string
 
 	app := cli.NewApp()
 	app.Name = info.Name
@@ -36,15 +37,29 @@ func Initialize(info *Info) error {
 			Usage:       "Secret's Name to fetch environment from",
 			Destination: &secretName,
 		},
+		cli.StringFlag{
+			Name:        "env, e",
+			Usage:       "Environment to use the secret name from",
+			Destination: &env,
+		},
 	}
 
 	app.Commands = []cli.Command{
+		cli.Command{
+			Name:  "setup",
+			Usage: "Setup envault configuration",
+			Action: func(ctx *cli.Context) error {
+				Setup()
+
+				return nil
+			},
+		},
 		cli.Command{
 			Name:  "list",
 			Usage: "List environment variables stored in Secrets Manager",
 			Flags: flags,
 			Action: func(ctx *cli.Context) error {
-				List(secretName)
+				List(secretName, env)
 
 				return nil
 			},
@@ -55,7 +70,7 @@ func Initialize(info *Info) error {
 			ArgsUsage: "[command]",
 			Flags:     flags,
 			Action: func(ctx *cli.Context) error {
-				Run(secretName, ctx.Args().Get(0))
+				Run(secretName, ctx.Args().Get(0), env)
 
 				return nil
 			},

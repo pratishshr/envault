@@ -3,7 +3,6 @@ package aws
 import (
 	"encoding/json"
 	"fmt"
-	"os"
 
 	"github.com/aws/aws-sdk-go/aws"
 	"github.com/aws/aws-sdk-go/aws/awserr"
@@ -12,9 +11,7 @@ import (
 )
 
 // GetSecrets ...
-func GetSecrets(secretName string) map[string]string {
-	profile := os.Getenv("AWS_PROFILE")
-
+func GetSecrets(profile string, region string, secretName string) map[string]string {
 	if profile == "" {
 		profile = "default"
 	}
@@ -22,6 +19,9 @@ func GetSecrets(secretName string) map[string]string {
 	client := secretsmanager.New(session.Must(session.NewSessionWithOptions(session.Options{
 		SharedConfigState: session.SharedConfigEnable,
 		Profile:           profile,
+		Config: aws.Config{
+			Region: aws.String(region),
+		},
 	})))
 
 	input := &secretsmanager.GetSecretValueInput{

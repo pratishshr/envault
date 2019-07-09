@@ -6,7 +6,8 @@ import (
 )
 
 // Error exits the application by showing the given message.
-func Error(message string) {
-	fmt.Println("Error: " + message)
+func Error(err interface{}) {
+	fmt.Println("Error:")
+	fmt.Println(err)
 	os.Exit(1)
 }
