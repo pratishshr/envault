@@ -10,33 +10,103 @@ Envault focuses on integrating AWS Secrets Manager in your application with ease
 
 ## Quick Start
 
-#### Install Envault:
+### 1. Install Envault:
 
 ```
 $ curl -sf https://raw.githubusercontent.com/pratishshr/envault/master/install.sh | sh
 ```
 
-#### Setup environment:
+### 2. Verify Installation:
 
 ```
-$ export AWS_REGION={AWS region where you added your secret}
-$ export AWS_ACCESS_KEY_ID=${Your AWS access key}
-$ export AWS_SECRET_ACCESS_KEY=${Your AWS secret key}
+$ envault
 ```
 
-Envault also supports AWS credentials from `~/.aws` with the `default` profile if you don't set the environment variables. <br>
+### 3. AWS Credentials
 
-#### List secrets:
+Before using envault, you have to provide your AWS credentials. This allows envault to fetch secrets from the AWS Secrets Manager. Also, make sure you have the correct access for your credentials.
 
-```
-$ envault list -secret=${path to your secret}
-```
-
-#### Run process with secrets:
+Simply create `~/.aws/credentials` file for storing AWS credentials. <br/>
+Example: 
 
 ```
-$ envault run 'yarn build' -secret=${path to your secret}
+[example-profile]
+aws_access_key_id = xxxxxx
+aws_secret_access_key = xxxxxx
 ```
+To know more about AWS configurations, view [Configuring the AWS CLI](https://docs.aws.amazon.com/cli/latest/userguide/cli-chap-configure.html)
+
+### 4. Setup
+
+Go to your project directory and run `setup` command to initiate the setup process.
+
+```
+$ envault setup
+```
+
+- Choose your AWS profile that was setup earlier, <br>
+- Choose the AWS Region where 
+- You can also add an deployment environment associated with the secret name. 
+
+```
+ Example: 
+
+ AWS profile: default
+ Region: US West (Oregon)
+ Add an environment (eg. dev): dev
+ Secret Name: api/dev
+```
+`envault.json` file will be created in your project directory like below.
+```json
+{
+  "profile": "default",
+  "region": "us-west-2",
+  "environments": {
+    "dev": "api/dev"
+  }
+}
+```
+
+**If you do not want a project specific config file, you can skip this step.**
+
+### 5. List secrets
+
+```
+$ envault list -e dev
+```
+Here `dev` is the environment you specified in `envault.json`.
+
+
+If you have not setup a `envault.json` file.,you can stll pass `--secret` or `-s` flag with the secrets path.
+This will use the `default` profile from your `~/.aws/credentials` file.
+```
+$ envault list --secret=api/dev
+```
+
+### 6. Run with secrets
+
+```
+$ envault run 'yarn build' -e dev
+```
+This will inject the secrets from `dev` to the `yarn build` process.
+
+Similarly, if you have not setup a `envault.json` file, you can stll pass `--secret` or `-s` flag with the secrets path.
+This will use the `default` profile from your `~/.aws/credentials` file.
+
+```
+$ envault run 'yarn build' --secret=api/dev
+```
+
+### 7. Usage with CI/CD:
+
+Instead of setting up a `~/.aws/credentials` file. You can also use the following environment variables to set up your AWS credentials.
+
+| Variable | Description |
+|-----------|----------|
+| AWS_ACCESS_KEY_ID | Your AWS access key|
+| AWS_SECRET_ACCESS_KEY | Your AWS secret key|
+| AWS_REGION | AWS region where you added your secret|
+
 
 ## License
 
