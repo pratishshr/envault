@@ -1,8 +1,0 @@
-{
-  "profile": "default",
-  "region": "us-west-2",
-  "environments": {
-    "dev": "test",
-    "uat": "test/test"
-  }
-}
