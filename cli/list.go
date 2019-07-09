@@ -9,12 +9,21 @@ import (
 )
 
 // List all environment from Secrets Manager
-func List(secretName string) {
-	if secretName == "" {
+func List(secretName string, env string) {
+	conf := config.GetConfig()
+
+	if secretName == "" && env == "" {
 		exit.Error("Secret Name is required to list environments. Set -secret flag.")
 	}
 
-	conf := config.GetConfig()
+	if secretName == "" && env != "" {
+		if _, ok := conf.Environments[env]; !ok {
+			exit.Error("Environment '" + env + "' does not exist.")
+		}
+
+		secretName = conf.Environments[env]
+	}
+
 	secrets := aws.GetSecrets(conf.Profile, conf.Region, secretName)
 
 	for key, value := range secrets {

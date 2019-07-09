@@ -31,15 +31,6 @@ func parseConfig(configFile []byte) *Config {
 	return configuration
 }
 
-// CreateConfig adds a configuration file to the project.
-func CreateConfig(config *Config) {
-	configJSON, _ := json.MarshalIndent(config, "", "  ")
-
-	ioutil.WriteFile(fileName, configJSON, 0644)
-
-	fmt.Println("Setup Complete! " + fileName + " has been added to the project.")
-}
-
 func parseFromEnvironment() *Config {
 	configuration := &Config{
 		Profile: os.Getenv("AWS_PROFILE"),
@@ -53,6 +44,15 @@ func parseFromFile() *Config {
 	configFile, _ := ioutil.ReadFile(fileName)
 
 	return parseConfig(configFile)
+}
+
+// CreateConfig adds a configuration file to the project.
+func CreateConfig(config *Config) {
+	configJSON, _ := json.MarshalIndent(config, "", "  ")
+
+	ioutil.WriteFile(fileName, configJSON, 0644)
+
+	fmt.Println("Setup Complete! " + fileName + " has been added to the project.")
 }
 
 // GetConfig reads configuration of the project.
