@@ -6,7 +6,7 @@ import (
 	"github.com/urfave/cli"
 )
 
-// Info defined the basic information required for the CLI.
+// Info defines the basic information required for the CLI.
 type Info struct {
 	Name        string
 	Version     string
@@ -40,10 +40,10 @@ func Initialize(info *Info) error {
 
 	app.Commands = []cli.Command{
 		cli.Command{
-			Name:  "init",
-			Usage: "Initial envault configuration",
+			Name:  "setup",
+			Usage: "Setup envault configuration",
 			Action: func(ctx *cli.Context) error {
-				Init()
+				Setup()
 
 				return nil
 			},
