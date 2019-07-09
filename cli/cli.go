@@ -70,7 +70,7 @@ func Initialize(info *Info) error {
 			ArgsUsage: "[command]",
 			Flags:     flags,
 			Action: func(ctx *cli.Context) error {
-				Run(secretName, ctx.Args().Get(0))
+				Run(secretName, ctx.Args().Get(0), env)
 
 				return nil
 			},
