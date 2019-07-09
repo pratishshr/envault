@@ -1,7 +1,7 @@
 # Envault 
-![GitHub release](https://img.shields.io/github/release/pratishshr/envault.svg?style=flat-square)
-![Travis (.org)](https://img.shields.io/travis/pratishshr/envault.svg?style=flat-square)
-![GitHub](https://img.shields.io/github/license/pratishshr/envault.svg?style=flat-square)
+![GitHub release](https://img.shields.io/github/release/pratishshr/envault.svg?style=flat)
+![Travis (.org)](https://img.shields.io/travis/pratishshr/envault.svg?style=flat)
+![GitHub](https://img.shields.io/github/license/pratishshr/envault.svg?style=flat)
 
 A simple CLI tool to run a process with secrets from AWS Secrets Manager.
 
