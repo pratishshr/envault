@@ -6,7 +6,7 @@ A simple CLI tool to run a process with secrets from AWS Secrets Manager.
 
 ## About
 
-Envault focuses on integrating AWS Secrets Manager in your application with ease without having to write a single line of code in your source files. Simply run your commands with the Envault CLI and the secrets will be injected in that process only.
+Envault focuses on integrating AWS Secrets Manager in your application with ease without having to write a single line of code in your source files. Simply run your commands with the Envault CLI and the secrets will be injected in that process.
 
 ## Quick Start
 
@@ -44,9 +44,9 @@ Go to your project directory and run `setup` command to initiate the setup proce
 $ envault setup
 ```
 
-- Choose your AWS profile that was setup earlier, <br>
-- Choose the AWS Region where 
-- You can also add an deployment environment associated with the secret name. 
+- Choose your AWS profile that was setup earlier. <br>
+- Choose the AWS Region where your secrets are kept.
+- You can also add a deployment environment associated with the secret name. You may add any number of environment you want.
 
 ```
  Example: 
@@ -55,6 +55,8 @@ $ envault setup
  Region: US West (Oregon)
  Add an environment (eg. dev): dev
  Secret Name: api/dev
+ Add an environment (eg. dev): uat
+ Secret Name: api/uat
 ```
 `envault.json` file will be created in your project directory like below.
 ```json
@@ -62,25 +64,28 @@ $ envault setup
   "profile": "default",
   "region": "us-west-2",
   "environments": {
-    "dev": "api/dev"
+    "dev": "api/dev",
+    "uat": "api/uat"
   }
 }
 ```
 
-**If you do not want a project specific config file, you can skip this step.**
+**If you do not want a project specific config file, you can skip the above step.**
 
 ### 5. List secrets
 
 ```
 $ envault list -e dev
+$ envault list -e uat
 ```
-Here `dev` is the environment you specified in `envault.json`.
+Here `dev` and `uat` are the environments you specified in `envault.json`.
 
 
-If you have not setup a `envault.json` file.,you can stll pass `--secret` or `-s` flag with the secrets path.
+If you have not setup a `envault.json` file, you can stll pass `--secret` or `-s` flag with the secrets path.
 This will use the `default` profile from your `~/.aws/credentials` file.
 ```
 $ envault list --secret=api/dev
+$ envault list --secret=api/uat
 ```
 
 ### 6. Run with secrets
