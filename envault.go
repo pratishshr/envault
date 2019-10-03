@@ -9,7 +9,7 @@ import (
 func main() {
 	info := &cli.Info{
 		Name:        "Envault",
-		Version:     "1.1.0",
+		Version:     "1.1.2",
 		Description: "Envault is a simple CLI tool to run a process with secrets from AWS Secrets Manager.",
 		AuthorName:  "Pratish Shrestha",
 		AuthorEmail: "pratishshr@gmail.com",
