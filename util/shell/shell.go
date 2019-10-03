@@ -3,6 +3,8 @@ package shell
 import (
 	"os"
 	"os/exec"
+
+	"github.com/pratishshr/envault/util/system/exit"
 )
 
 func convertToSlice(secrets map[string]string) []string {
@@ -24,5 +26,9 @@ func Execute(command string, secrets map[string]string) {
 	cmd.Stdout = os.Stdout
 	cmd.Stderr = os.Stderr
 
-	cmd.Run()
+	err := cmd.Run()
+
+	if err != nil {
+		exit.Error("Script Error: " + err.Error())
+	}
 }
