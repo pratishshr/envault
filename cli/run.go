@@ -7,10 +7,10 @@ import (
 )
 
 // Run given command with the secrets from given Secret Manager.
-func Run(secretName string, command string, env string, region string) {
+func Run(secretName string, command string, env string, region string, profile string) {
 	if command == "" {
 		exit.Error("Command to run is not specified. Add command as 'envault run [command]'")
 	}
 
-	shell.Execute(command, secrets.GetSecrets(secretName, env, region))
+	shell.Execute(command, secrets.GetSecrets(secretName, env, region, profile))
 }

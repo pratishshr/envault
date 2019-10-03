@@ -7,7 +7,7 @@ import (
 )
 
 // GetSecrets sets appropriate config and fetches secrets from aws.
-func GetSecrets(secretName string, env string, region string) map[string]string {
+func GetSecrets(secretName string, env string, region string, profile string) map[string]string {
 	conf := config.GetConfig()
 
 	if secretName == "" && env == "" {
@@ -26,5 +26,9 @@ func GetSecrets(secretName string, env string, region string) map[string]string 
 		region = conf.Region
 	}
 
-	return aws.GetSecrets(conf.Profile, region, secretName)
+	if profile == "" {
+		profile = conf.Profile
+	}
+
+	return aws.GetSecrets(profile, region, secretName)
 }
