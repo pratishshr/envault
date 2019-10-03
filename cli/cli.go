@@ -19,6 +19,7 @@ type Info struct {
 func Initialize(info *Info) error {
 	var secretName string
 	var env string
+	var region string
 
 	app := cli.NewApp()
 	app.Name = info.Name
@@ -42,6 +43,11 @@ func Initialize(info *Info) error {
 			Usage:       "Environment to use the secret name from",
 			Destination: &env,
 		},
+		cli.StringFlag{
+			Name:        "region, r",
+			Usage:       "AWS Region",
+			Destination: &region,
+		},
 	}
 
 	app.Commands = []cli.Command{
@@ -59,7 +65,7 @@ func Initialize(info *Info) error {
 			Usage: "List environment variables stored in Secrets Manager",
 			Flags: flags,
 			Action: func(ctx *cli.Context) error {
-				List(secretName, env)
+				List(secretName, env, region)
 
 				return nil
 			},
@@ -70,7 +76,7 @@ func Initialize(info *Info) error {
 			ArgsUsage: "[command]",
 			Flags:     flags,
 			Action: func(ctx *cli.Context) error {
-				Run(secretName, ctx.Args().Get(0), env)
+				Run(secretName, ctx.Args().Get(0), env, region)
 
 				return nil
 			},
