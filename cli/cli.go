@@ -20,6 +20,7 @@ func Initialize(info *Info) error {
 	var secretName string
 	var env string
 	var region string
+	var profile string
 
 	app := cli.NewApp()
 	app.Name = info.Name
@@ -48,6 +49,11 @@ func Initialize(info *Info) error {
 			Usage:       "AWS Region",
 			Destination: &region,
 		},
+		cli.StringFlag{
+			Name:        "profile, p",
+			Usage:       "Profile",
+			Destination: &profile,
+		},
 	}
 
 	app.Commands = []cli.Command{
@@ -65,7 +71,7 @@ func Initialize(info *Info) error {
 			Usage: "List environment variables stored in Secrets Manager",
 			Flags: flags,
 			Action: func(ctx *cli.Context) error {
-				List(secretName, env, region)
+				List(secretName, env, region, profile)
 
 				return nil
 			},
@@ -76,7 +82,7 @@ func Initialize(info *Info) error {
 			ArgsUsage: "[command]",
 			Flags:     flags,
 			Action: func(ctx *cli.Context) error {
-				Run(secretName, ctx.Args().Get(0), env, region)
+				Run(secretName, ctx.Args().Get(0), env, region, profile)
 
 				return nil
 			},
