@@ -71,7 +71,7 @@ $ envault setup
 }
 ```
 
-**If you do not want a project specific config file, you can skip the above step.**
+**If you do not want a project-specific config file, you can skip the above step.**
 
 ### 5. List secrets
 
@@ -82,7 +82,7 @@ $ envault list -e uat
 Here `dev` and `uat` are the environments you specified in `envault.json`.
 
 
-If you have not setup a `envault.json` file, you can stll pass `--secret` or `-s` flag with the secrets path.
+If you have not setup a `envault.json` file, you can still pass `--secret` or `-s` flag with the secrets path.
 This will use the `default` profile from your `~/.aws/credentials` file.
 ```
 $ envault list --secret=api/dev
@@ -96,7 +96,7 @@ $ envault run 'yarn build' -e dev
 ```
 This will inject the secrets from `dev` to the `yarn build` process.
 
-Similarly, if you have not setup a `envault.json` file, you can stll pass `--secret` or `-s` flag with the secrets path.
+Similarly, if you have not setup a `envault.json` file, you can still pass `--secret` or `-s` flag with the secrets path.
 This will use the `default` profile from your `~/.aws/credentials` file.
 
 ```
