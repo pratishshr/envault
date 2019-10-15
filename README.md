@@ -48,6 +48,7 @@ $ envault setup
 - Choose your AWS profile that was setup earlier. <br>
 - Choose the AWS Region where your secrets are kept.
 - You can also add a deployment environment associated with the secret name. You may add any number of environment you want.
+- Set a default env
 
 ```
  Example: 
@@ -67,7 +68,8 @@ $ envault setup
   "environments": {
     "dev": "api/dev",
     "uat": "api/uat"
-  }
+  },
+  "defaultEnv": "dev"
 }
 ```
 

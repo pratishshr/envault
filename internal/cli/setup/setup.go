@@ -99,15 +99,35 @@ func askEnvQuestions() map[string]string {
 	return environmentsMap
 }
 
+func askDefaultEnvQuestion(envAnswers map[string]string) string {
+	envNames := make([]string, 0, len(envAnswers))
+	for k := range envAnswers {
+		envNames = append(envNames, k)
+	}
+
+	defaultEnvQuestion := &survey.Select{
+		Message: "Set a default env:",
+		Options: envNames,
+	}
+
+	var answer string
+	survey.AskOne(defaultEnvQuestion, &answer)
+
+	return answer
+}
+
 // Run starts the setup instructions.
 func Run() {
 	awsAnswers := askAwsQuestions()
 	envAnswers := askEnvQuestions()
 
+	defaultEnvAnswer := askDefaultEnvQuestion(envAnswers)
+
 	configuration := &config.Config{
-		Profile:      awsAnswers.Profile,
-		Region:       awsAnswers.Region,
-		Environments: envAnswers,
+		Profile:            awsAnswers.Profile,
+		Region:             awsAnswers.Region,
+		Environments:       envAnswers,
+		DefaultEnvironment: defaultEnvAnswer,
 	}
 
 	config.CreateConfig(configuration)
