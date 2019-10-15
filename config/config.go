@@ -12,9 +12,10 @@ import (
 
 // Config for the project.
 type Config struct {
-	Profile      string            `json:"profile"`
-	Region       string            `json:"region"`
-	Environments map[string]string `json:"environments"`
+	Profile            string            `json:"profile"`
+	Region             string            `json:"region"`
+	Environments       map[string]string `json:"environments"`
+	DefaultEnvironment string            `json:"defaultEnv"`
 }
 
 var fileName = "envault.json"
