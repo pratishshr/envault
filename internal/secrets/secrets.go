@@ -10,6 +10,10 @@ import (
 func GetSecrets(secretName string, env string, region string, profile string) map[string]string {
 	conf := config.GetConfig()
 
+	if env == "" {
+		env = conf.DefaultEnvironment
+	}
+
 	if secretName == "" && env == "" {
 		exit.Error("Secret Name is required to list environments. Set -secret flag.")
 	}
