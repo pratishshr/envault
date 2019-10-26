@@ -10,6 +10,8 @@ import (
 	"github.com/aws/aws-sdk-go/service/secretsmanager"
 )
 
+const ErrCodeInvalidCredentialsException = "NoCredentialProviders"
+
 // GetSecrets ...
 func GetSecrets(profile string, region string, secretName string) map[string]string {
 	if profile == "" {
@@ -53,6 +55,12 @@ func GetSecrets(profile string, region string, secretName string) map[string]str
 			case secretsmanager.ErrCodeResourceNotFoundException:
 				// We can't find the resource that you asked for.
 				fmt.Println(secretsmanager.ErrCodeResourceNotFoundException, aerr.Error())
+
+			case ErrCodeInvalidCredentialsException:
+				fmt.Println("Please provide valid AWS credentials.")
+
+			default:
+				fmt.Println(aerr.Error())
 			}
 		} else {
 			// Print the error, cast err to awserr.Error to get the Code and
