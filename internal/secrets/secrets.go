@@ -1,13 +1,24 @@
 package secrets
 
 import (
+	"github.com/joho/godotenv"
 	"github.com/pratishshr/envault/config"
 	"github.com/pratishshr/envault/platform/aws"
 	"github.com/pratishshr/envault/util/system/exit"
 )
 
 // GetSecrets sets appropriate config and fetches secrets from aws.
-func GetSecrets(secretName string, env string, region string, profile string) map[string]string {
+func GetSecrets(secretName string, env string, region string, profile string, envFile string) map[string]string {
+	if envFile != "" {
+		secrets, err := godotenv.Read(envFile)
+
+		if err != nil {
+			exit.Error("Could not read env file " + envFile)
+		}
+
+		return secrets
+	}
+
 	conf := config.GetConfig()
 
 	if env == "" {
