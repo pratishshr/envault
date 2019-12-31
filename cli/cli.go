@@ -21,6 +21,7 @@ func Initialize(info *Info) error {
 	var env string
 	var region string
 	var profile string
+	var envFile string
 
 	app := cli.NewApp()
 	app.Name = info.Name
@@ -54,6 +55,11 @@ func Initialize(info *Info) error {
 			Usage:       "Profile",
 			Destination: &profile,
 		},
+		cli.StringFlag{
+			Name:        "envfile, ef",
+			Usage:       "Use .env file",
+			Destination: &envFile,
+		},
 	}
 
 	app.Commands = []cli.Command{
@@ -71,7 +77,7 @@ func Initialize(info *Info) error {
 			Usage: "List environment variables stored in Secrets Manager",
 			Flags: flags,
 			Action: func(ctx *cli.Context) error {
-				List(secretName, env, region, profile)
+				List(secretName, env, region, profile, envFile)
 
 				return nil
 			},
@@ -82,7 +88,7 @@ func Initialize(info *Info) error {
 			ArgsUsage: "[command]",
 			Flags:     flags,
 			Action: func(ctx *cli.Context) error {
-				Run(secretName, ctx.Args().Get(0), env, region, profile)
+				Run(secretName, ctx.Args().Get(0), env, region, profile, envFile)
 
 				return nil
 			},

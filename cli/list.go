@@ -7,8 +7,8 @@ import (
 )
 
 // List all environment from Secrets Manager
-func List(secretName string, env string, region string, profile string) {
-	for key, value := range secrets.GetSecrets(secretName, env, region, profile) {
+func List(secretName string, env string, region string, profile string, envFile string) {
+	for key, value := range secrets.GetSecrets(secretName, env, region, profile, envFile) {
 		fmt.Println(key + "=" + value)
 	}
 }
