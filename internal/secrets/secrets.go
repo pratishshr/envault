@@ -1,6 +1,8 @@
 package secrets
 
 import (
+	"os"
+
 	"github.com/joho/godotenv"
 	"github.com/pratishshr/envault/config"
 	"github.com/pratishshr/envault/platform/aws"
@@ -20,6 +22,7 @@ func GetSecrets(secretName string, env string, region string, profile string, en
 	}
 
 	conf := config.GetConfig()
+	env = os.Getenv("ENVIRONMENT")
 
 	if env == "" {
 		env = conf.DefaultEnvironment
