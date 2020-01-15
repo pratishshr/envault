@@ -114,6 +114,7 @@ Instead of setting up a `~/.aws/credentials` file. You can also use the followin
 | AWS_ACCESS_KEY_ID | Your AWS access key|
 | AWS_SECRET_ACCESS_KEY | Your AWS secret key|
 | AWS_REGION | AWS region where you added your secret|
+| ENVIRONMENT | Environment which you set in envault.json |
 
 
 ## License
