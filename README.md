@@ -9,6 +9,16 @@ A simple CLI tool to run a process with secrets from AWS Secrets Manager.
 
 Envault focuses on integrating AWS Secrets Manager in your application with ease without having to write a single line of code in your source files. Simply run your commands with the Envault CLI and the secrets will be injected in that process.
 
+## Table Of Content
+1. [Install Envault](#1-install-envault)
+2. [Verify Installation](#2-verify-installation)
+3. [AWS Credentials](#3-aws-credentials)
+4. [Setup](#4-setup)
+5. [List Secrets](#5-list-secrets)
+6. [Run With Secrets](#6-run-with-secrets)
+5. [Usage with CI/CD](#7-usage-with-cicd)
+6. [Using custom .env files](#8-using-custom-env-files)
+
 ## Usage
 
 ### 1. Install Envault:
@@ -115,6 +125,14 @@ Instead of setting up a `~/.aws/credentials` file. You can also use the followin
 | AWS_SECRET_ACCESS_KEY | Your AWS secret key|
 | AWS_REGION | AWS region where you added your secret|
 | ENVIRONMENT | Environment which you set in envault.json |
+
+
+### 8. Using custom .env files
+If you want to inject environment keys from a file instead of using AWS Secrets Manager. You can use the`-ef` flag.
+
+```
+$ envault run 'envault run 'go run main.go' -ef env/staging.env
+```
 
 
 ## License
