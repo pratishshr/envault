@@ -22,7 +22,10 @@ func GetSecrets(secretName string, env string, region string, profile string, en
 	}
 
 	conf := config.GetConfig()
-	env = os.Getenv("ENVIRONMENT")
+
+	if env == "" {
+		env = os.Getenv("ENVIRONMENT")
+	}
 
 	if env == "" {
 		env = conf.DefaultEnvironment
