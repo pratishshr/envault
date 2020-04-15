@@ -9,11 +9,8 @@ ENV GO111MODULE=on \
 WORKDIR /build
 
 # Copy and download dependency using go mod
-COPY go.mod go.sum ./
-RUN go mod download
-
-# Copy the code into the container
 COPY . .
+RUN go mod download
 
 # Build the application
 RUN go build -o /envault .
@@ -37,5 +34,3 @@ RUN apk update && \
 
 COPY --from=builder /envault /usr/local/bin/envault
 
-# Command to run when starting the container
-CMD ["envault","run"]
