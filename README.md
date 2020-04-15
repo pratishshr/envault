@@ -1,4 +1,4 @@
-# Envault 
+# Envault
 ![GitHub release](https://img.shields.io/github/release/pratishshr/envault.svg?style=flat)
 ![Travis (.org)](https://img.shields.io/travis/pratishshr/envault.svg?style=flat)
 ![GitHub](https://img.shields.io/github/license/pratishshr/envault.svg?style=flat)
@@ -24,7 +24,7 @@ Envault focuses on integrating AWS Secrets Manager in your application with ease
 ### 1. Install Envault:
 
 ```
-$ curl -sf https://raw.githubusercontent.com/pratishshr/envault/master/install.sh | sh
+$ curl -sf https://raw.githubusercontent.com/pratishshr/envault/master/install.sh | sudo sh
 ```
 
 ### 2. Verify Installation:
@@ -38,7 +38,7 @@ $ envault
 Before using envault, you have to provide your AWS credentials. This allows envault to fetch secrets from the AWS Secrets Manager. Also, make sure you have the correct access for your credentials.
 
 Simply create `~/.aws/credentials` file for storing AWS credentials. <br/>
-Example: 
+Example:
 
 ```
 [example-profile]
@@ -61,7 +61,7 @@ $ envault setup
 - Set a default env
 
 ```
- Example: 
+ Example:
 
  AWS profile: default
  Region: US West (Oregon)
