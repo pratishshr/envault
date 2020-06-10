@@ -31,6 +31,10 @@ func GetSecrets(secretName string, env string, region string, profile string, en
 		env = conf.DefaultEnvironment
 	}
 
+	if secretName == "" {
+		secretName = os.Getenv("SECRET_NAME")
+	}
+
 	if secretName == "" && env == "" {
 		exit.Error("Secret Name is required to list environments. Set -secret flag.")
 	}
