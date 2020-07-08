@@ -3,6 +3,7 @@ package shell
 import (
 	"fmt"
 	"reflect"
+	"sort"
 	"testing"
 )
 
@@ -22,11 +23,11 @@ func TestConvertToSlice(t *testing.T) {
 		{
 			Name: "With many key value",
 			Input: map[string]string{
-				"secretkey":  "secretvalue",
+				"secretkey1": "secretvalue",
 				"secretkey2": "secretvalue",
 				"secretkey3": "secretvalue",
 			},
-			Output: []string{"secretkey=secretvalue", "secretkey2=secretvalue", "secretkey3=secretvalue"},
+			Output: []string{"secretkey1=secretvalue", "secretkey2=secretvalue", "secretkey3=secretvalue"},
 		},
 		{
 			Name:   "With zero key value",
@@ -38,6 +39,9 @@ func TestConvertToSlice(t *testing.T) {
 	for _, tt := range tests {
 		t.Run(tt.Name, func(t *testing.T) {
 			output := convertToSlice(tt.Input)
+			// convertToSlice implementation loops over map and go does no specify the
+			// iteration order so had to sort the output to test it reliably
+			sort.Strings(output)
 			if !reflect.DeepEqual(output, tt.Output) {
 				t.Fatalf("convertToSlice() error:\ngot  %v\nwant %v", output, tt.Output)
 			}
