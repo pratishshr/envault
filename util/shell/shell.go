@@ -17,6 +17,8 @@ func convertToSlice(secrets map[string]string) []string {
 	return secretsSlice
 }
 
+var throwError = exit.Error
+
 // Execute runs the process with the supplied environment.
 func Execute(command string, secrets map[string]string) {
 	env := append(os.Environ(), convertToSlice(secrets)...)
@@ -29,6 +31,6 @@ func Execute(command string, secrets map[string]string) {
 	err := cmd.Run()
 
 	if err != nil {
-		exit.Error("Script Error: " + err.Error())
+		throwError("Script Error: " + err.Error())
 	}
 }

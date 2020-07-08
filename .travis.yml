@@ -2,6 +2,9 @@ language: go
 go:
   - 1.12
 
+script:
+  - go test ./...
+
 deploy:
   - provider: script
     skip_cleanup: true
