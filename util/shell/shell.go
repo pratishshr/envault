@@ -22,7 +22,7 @@ func Execute(command string, secrets map[string]string) {
 	env := append(os.Environ(), convertToSlice(secrets)...)
 
 	cmd := exec.Command("sh", "-c", command)
-	cmd.Env = env
+	cmd.Env = append(env, "IS_ENVAULT=true")
 	cmd.Stdout = os.Stdout
 	cmd.Stderr = os.Stderr
 
