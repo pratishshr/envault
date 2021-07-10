@@ -27,6 +27,11 @@ Envault focuses on integrating AWS Secrets Manager in your application with ease
 $ curl -sf https://raw.githubusercontent.com/pratishshr/envault/master/install.sh | sudo sh
 ```
 
+Note: 
+If your architecture is not supported, clone this repo and run `go build` to generate a binary.
+Then, simply place the binary in your local `bin`.
+
+
 ### 2. Verify Installation:
 
 ```

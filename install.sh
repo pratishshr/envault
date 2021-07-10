@@ -64,6 +64,7 @@ get_binaries() {
   case "$PLATFORM" in
     darwin/386) BINARIES="envault" ;;
     darwin/amd64) BINARIES="envault" ;;
+    darwin/arm64) BINARIES="envault" ;;
     linux/386) BINARIES="envault" ;;
     linux/amd64) BINARIES="envault" ;;
     *)
