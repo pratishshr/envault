@@ -23,8 +23,8 @@ Envault focuses on integrating AWS Secrets Manager in your application with ease
 
 ### 1. Install Envault:
 
-```
-$ curl -sf https://raw.githubusercontent.com/pratishshr/envault/master/install.sh | sudo sh
+```shell
+curl -sf https://raw.githubusercontent.com/pratishshr/envault/master/install.sh | sudo sh
 ```
 
 Note: 
@@ -34,8 +34,8 @@ Then, simply place the binary in your local `bin`.
 
 ### 2. Verify Installation:
 
-```
-$ envault
+```shell
+envault
 ```
 
 ### 3. AWS Credentials
@@ -56,8 +56,8 @@ To know more about AWS configurations, view [Configuring the AWS CLI](https://do
 
 Go to your project directory and run `setup` command to initiate the setup process.
 
-```
-$ envault setup
+```shell
+envault setup
 ```
 
 - Choose your AWS profile that was setup earlier. <br>
@@ -92,32 +92,36 @@ $ envault setup
 
 ### 5. List secrets
 
+```shell
+envault list -e dev
 ```
-$ envault list -e dev
-$ envault list -e uat
+```shell
+envault list -e uat
 ```
 Here `dev` and `uat` are the environments you specified in `envault.json`.
 
 
 If you have not setup a `envault.json` file, you can still pass `--secret` or `-s` flag with the secrets path.
 This will use the `default` profile from your `~/.aws/credentials` file.
+```shell
+envault list --secret=api/dev
 ```
-$ envault list --secret=api/dev
-$ envault list --secret=api/uat
+```shell
+envault list --secret=api/uat
 ```
 
 ### 6. Run with secrets
 
-```
-$ envault run 'yarn build' -e dev
+```shell
+envault run 'yarn build' -e dev
 ```
 This will inject the secrets from `dev` to the `yarn build` process.
 
 Similarly, if you have not setup a `envault.json` file, you can still pass `--secret` or `-s` flag with the secrets path.
 This will use the `default` profile from your `~/.aws/credentials` file.
 
-```
-$ envault run 'yarn build' --secret=api/dev
+```shell
+envault run 'yarn build' --secret=api/dev
 ```
 
 ### 7. Usage with CI/CD:
@@ -136,8 +140,8 @@ Instead of setting up a `~/.aws/credentials` file. You can also use the followin
 ### 8. Using custom .env files
 If you want to inject environment keys from a file instead of using AWS Secrets Manager. You can use the`-ef` flag.
 
-```
-$ envault run 'envault run 'go run main.go' -ef env/staging.env
+```shell
+envault run 'envault run 'go run main.go' -ef env/staging.env
 ```
 
 
